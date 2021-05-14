@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CannonRotation : MonoBehaviour
 {
-    Vector3 positionToLookAt = new Vector3(0.28f, 1.89f, 10.72f);
-    Camera mainCamera;
+    private Vector3 positionToLookAt = new Vector3(0.28F, 1.89F, 10.72F);
+
+    private Camera mainCamera;
 	
     void Start()
     {
@@ -17,7 +17,7 @@ public class CannonRotation : MonoBehaviour
     {
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        this.positionToLookAt = this.mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 30f));
+        this.positionToLookAt = this.mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 30F));
 
         this.transform.position = new Vector3(this.transform.position.x + (Input.GetAxis("Horizontal") * Time.deltaTime), this.transform.position.y, this.transform.position.z);
 
@@ -29,6 +29,6 @@ public class CannonRotation : MonoBehaviour
 #endif
 
         this.transform.LookAt(this.positionToLookAt);
-        this.transform.eulerAngles = new Vector3(0f, this.transform.localRotation.eulerAngles.y, 0f);
+        this.transform.eulerAngles = new Vector3(0F, this.transform.localRotation.eulerAngles.y, 0F);
     }
 }

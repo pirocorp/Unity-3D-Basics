@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class WeaponRotation : MonoBehaviour
 {
-    Camera mainCamera;
-    public GameObject Rocket;
-    public GameObject leftPostion;
-    public GameObject rightPosition;
+    private Camera mainCamera;
+
+    [SerializeField] 
+    private GameObject rocket;
+
+    [SerializeField] 
+    private GameObject leftPosition;
+
+    [SerializeField] 
+    private GameObject rightPosition;
 
     Vector3 posToFace = new Vector3(0.28f, 1.89f, 10.72f);
 
@@ -21,7 +26,7 @@ public class WeaponRotation : MonoBehaviour
     {
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        this.posToFace = this.mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 40f));
+        this.posToFace = this.mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 40F));
 
 #elif UNITY_IPHONE || UNITY_ANDROID
         if (Input.touchCount > 0)
@@ -32,17 +37,17 @@ public class WeaponRotation : MonoBehaviour
 
         this.transform.LookAt(this.posToFace);
 
-        this.transform.localRotation = Quaternion.Euler(this.transform.eulerAngles.x, 0f, 0f);
+        this.transform.localRotation = Quaternion.Euler(this.transform.eulerAngles.x, 0F, 0F);
 
 
         if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
-            GameObject go = Instantiate(this.Rocket);
-            go.transform.position = this.leftPostion.transform.position;
+            var go = Instantiate(this.rocket);
+            go.transform.position = this.leftPosition.transform.position;
             go.transform.LookAt(this.posToFace);
             go.AddComponent<RocketEngine>();
 
-            go = Instantiate(this.Rocket);
+            go = Instantiate(this.rocket);
             go.transform.position = this.rightPosition.transform.position;
             go.transform.LookAt(this.posToFace);
             go.AddComponent<RocketEngine>();

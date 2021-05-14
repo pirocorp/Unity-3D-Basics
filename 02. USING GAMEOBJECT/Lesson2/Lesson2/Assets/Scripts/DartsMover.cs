@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DartsMover : MonoBehaviour {
+    private int score = 0;
 
-
-    int score = 0;
-
-    Vector3 newPos;
-    Vector3 startPos;
-    float progress = 0f;
+    private Vector3 newPos;
+    private Vector3 startPos;
+    private float progress = 0F;
 
 	// Use this for initialization
 	void Start ()
@@ -21,22 +18,20 @@ public class DartsMover : MonoBehaviour {
     {
         this.transform.position = Vector3.Lerp(this.startPos, this.newPos, this.progress);
 
-        this.progress += Time.deltaTime * (0.5f + (this.score / 10));
+        this.progress += Time.deltaTime * (0.5F + (this.score / 10));
 
-        if (this.progress >= 1f)
+        if (this.progress >= 1F)
         {
             this.NewCoords();
         }
 	}
 
-
     void NewCoords()
     {
         this.startPos = this.transform.position;
-        this.newPos = new Vector3(Random.Range(-6.5f, 6f), Random.Range(4f, 16f), 11f);
-        this.progress = 0f;
+        this.newPos = new Vector3(Random.Range(-6.5F, 6F), Random.Range(4F, 16F), 11F);
+        this.progress = 0F;
     }
-
 
     void OnTriggerEnter(Collider other)
     {
@@ -44,6 +39,4 @@ public class DartsMover : MonoBehaviour {
         this.score++;
         Debug.Log("Score: " + this.score.ToString());
     }
-
-
 }
