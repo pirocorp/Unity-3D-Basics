@@ -43,8 +43,7 @@ public class ShooterScript : MonoBehaviour
             var rocket = Instantiate(this.rocket);
             rocket.transform.position = this.bulletPosition.transform.position;
 
-            rocket.transform.SetParent(this.gun.transform);
-            rocket.transform.localRotation = Quaternion.identity; // Vector3.zero
+            rocket.transform.rotation = this.bulletPosition.transform.rotation;
 
             rocket.AddComponent<RocketEngine>();
         }
