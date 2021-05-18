@@ -10,15 +10,13 @@ public class ShooterScript : MonoBehaviour
 
     private const float rotationSpeed = 80F;
 
-    private Vector3 positionToLookAt = new Vector3(0.28F, 1.89F, 10.72F);
-
     private Camera mainCamera;
 
     [SerializeField]
     private GameObject bulletPosition;
 
     [SerializeField]
-    private GameObject Rocket;
+    private GameObject rocket;
 
     [SerializeField]
     private GameObject gun;
@@ -38,6 +36,18 @@ public class ShooterScript : MonoBehaviour
             this.transform.position.z + GetVerticalAxisOffset);
 
         this.transform.Rotate(0F, GetRotationMouseXOffset, 0F); 
+        this.gun.transform.Rotate(- GetRotationMouseYOffset * GetRotationOffset, 0F, 0F);
+
+        if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            var rocket = Instantiate(this.rocket);
+            rocket.transform.position = this.bulletPosition.transform.position;
+
+            rocket.transform.SetParent(this.gun.transform);
+            rocket.transform.localRotation = Quaternion.identity; // Vector3.zero
+
+            rocket.AddComponent<RocketEngine>();
+        }
     }
 
     private static float GetMoveOffset => moveSpeed * Time.deltaTime;
@@ -49,4 +59,6 @@ public class ShooterScript : MonoBehaviour
     private static float GetVerticalAxisOffset => Input.GetAxis("Vertical") * GetMoveOffset;
 
     private static float GetRotationMouseXOffset => Input.GetAxis("Mouse X") * GetRotationOffset;
+
+    private static float GetRotationMouseYOffset => Input.GetAxis("Mouse Y") * GetRotationOffset;
 }
