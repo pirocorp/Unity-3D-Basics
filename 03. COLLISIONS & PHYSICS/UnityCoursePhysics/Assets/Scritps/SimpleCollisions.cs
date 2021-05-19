@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SimpleCollisions : MonoBehaviour 
 {
@@ -39,6 +38,4 @@ public class SimpleCollisions : MonoBehaviour
 	{
 		Debug.Log ("OnTriggerStay : " + collider.gameObject.name);
 	}
-
-
 }

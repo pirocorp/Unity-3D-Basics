@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class RayCast : MonoBehaviour 
 {
@@ -11,11 +10,13 @@ public class RayCast : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown (0)) 
 		{
-			Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			if(Physics.Raycast(ray, out hit, 20f))
+			var ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+
+			if(Physics.Raycast(ray, out var hit, 40F))
 			{
-				Debug.Log ("hit : " + hit.collider.name);
+				hit.rigidbody.AddForceAtPosition(ray.direction * this.hitForce, hit.point);
+				Debug.Log ("hit: " + hit.collider.name);
+				Debug.Log("hit: " + hit.rigidbody.velocity);
 			}
 		}
         

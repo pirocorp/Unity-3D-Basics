@@ -1,82 +1,98 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public float speedKoef = 0.5f;
-    public float mouseSpeedX = 1f;
-    public float mouseSpeedY = 1f;
-    public float jumpForce = 1f;
-    public float gravityInAir = 40f;
-    public float normalGravity = 9.8f;
-    public float maxMovingSpeed = 15;
-    public float dampTime = 2;
-    public bool isGrounded;
+    [SerializeField]
+    private float speedKoef = 0.5f;
+
+    [SerializeField]
+    private float mouseSpeedX = 1f;
+
+    [SerializeField]
+    private float mouseSpeedY = 1f;
+
+    [SerializeField]
+    private float jumpForce = 1f;
+
+    [SerializeField]
+    private float gravityInAir = 40f;
+
+    [SerializeField]
+    private float normalGravity = 9.8f;
+
+    [SerializeField]
+    private float maxMovingSpeed = 15;
+
+    [SerializeField]
+    private float dampTime = 2;
+
+    [SerializeField]
+    private bool isGrounded;
+
     private float mouseLookVertical;
     private float mouseLookHorizontal;
     private float dampVolumeX;
     private float dampVolumeZ;
-    Camera playerCamera;
+    private Camera playerCamera;
     private Vector2 movementVector;
 
     Rigidbody attachedRigidbody;
 
     private void Start()
     {
-        playerCamera = Camera.main;
-        Physics.gravity = -Vector3.up * normalGravity;
-        attachedRigidbody = GetComponent<Rigidbody>();
+        this.playerCamera = Camera.main;
+        Physics.gravity = -Vector3.up * this.normalGravity;
+        this.attachedRigidbody = this.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //transform.Translate(Input.GetAxis("Horizontal") * speedKoef, 0f, Input.GetAxis("Vertical") * speedKoef);
-        movementVector = new Vector2(attachedRigidbody.velocity.x, attachedRigidbody.velocity.z);
+        this.movementVector = new Vector2(this.attachedRigidbody.velocity.x, this.attachedRigidbody.velocity.z);
 
-        if (movementVector.magnitude > maxMovingSpeed)
+        if (this.movementVector.magnitude > this.maxMovingSpeed)
         {
-            movementVector.Normalize();
-            movementVector *= maxMovingSpeed;
+            this.movementVector.Normalize();
+            this.movementVector *= this.maxMovingSpeed;
         }
 
-        attachedRigidbody.velocity = new Vector3(movementVector.x, attachedRigidbody.velocity.y, movementVector.y);
+        this.attachedRigidbody.velocity = new Vector3(this.movementVector.x, this.attachedRigidbody.velocity.y, this.movementVector.y);
 
-        attachedRigidbody.AddRelativeForce(Input.GetAxis("Horizontal") * speedKoef, 0f, Input.GetAxis("Vertical") * speedKoef, ForceMode.Force);
+        this.attachedRigidbody.AddRelativeForce(Input.GetAxis("Horizontal") * this.speedKoef, 0f, Input.GetAxis("Vertical") * this.speedKoef, ForceMode.Force);
 
-        if (Input.GetAxis("Horizontal") == 0f && isGrounded)
+        if (Input.GetAxis("Horizontal") == 0f && this.isGrounded)
         {
-			attachedRigidbody.velocity = new Vector3(attachedRigidbody.velocity.x, attachedRigidbody.velocity.y, Mathf.SmoothDamp(attachedRigidbody.velocity.z, 0f, ref dampVolumeZ, dampTime));
+            this.attachedRigidbody.velocity = new Vector3(this.attachedRigidbody.velocity.x, this.attachedRigidbody.velocity.y, Mathf.SmoothDamp(this.attachedRigidbody.velocity.z, 0f, ref this.dampVolumeZ, this.dampTime));
         }
 
-		if (Input.GetAxis("Vertical") == 0f && isGrounded)
+		if (Input.GetAxis("Vertical") == 0f && this.isGrounded)
 		{
-			attachedRigidbody.velocity = new Vector3(Mathf.SmoothDamp(attachedRigidbody.velocity.x, 0f, ref dampVolumeX, dampTime), attachedRigidbody.velocity.y, attachedRigidbody.velocity.z);
+            this.attachedRigidbody.velocity = new Vector3(Mathf.SmoothDamp(this.attachedRigidbody.velocity.x, 0f, ref this.dampVolumeX, this.dampTime), this.attachedRigidbody.velocity.y, this.attachedRigidbody.velocity.z);
 		}
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            Jump();
+        if (Input.GetKeyDown(KeyCode.Space)) this.Jump();
 
-        mouseLookVertical = playerCamera.transform.localRotation.eulerAngles.x - (Input.GetAxis("Mouse Y") * mouseSpeedX);
-        mouseLookHorizontal = transform.rotation.eulerAngles.y + (Input.GetAxis("Mouse X") * mouseSpeedY);
+        this.mouseLookVertical = this.playerCamera.transform.localRotation.eulerAngles.x - (Input.GetAxis("Mouse Y") * this.mouseSpeedX);
+        this.mouseLookHorizontal = this.transform.rotation.eulerAngles.y + (Input.GetAxis("Mouse X") * this.mouseSpeedY);
 
-        if (mouseLookVertical <= 300 && mouseLookVertical >= 40)
+        if (this.mouseLookVertical <= 300 && this.mouseLookVertical >= 40)
             return;
 
 
-        transform.localRotation = Quaternion.Euler(0f, mouseLookHorizontal, 0f);
-        playerCamera.transform.localRotation = Quaternion.Euler(mouseLookVertical, 0f, 0f);
+        this.transform.localRotation = Quaternion.Euler(0f, this.mouseLookHorizontal, 0f);
+        this.playerCamera.transform.localRotation = Quaternion.Euler(this.mouseLookVertical, 0f, 0f);
     }
 
     private void Jump()
     {
         Debug.Log("Jump");
-        if (!isGrounded)
+        if (!this.isGrounded)
             return;
 
-        attachedRigidbody.AddForce(Vector3.up * jumpForce);
-        isGrounded = false;
-        SetGravity(2);
+        this.attachedRigidbody.AddForce(Vector3.up * this.jumpForce);
+        this.isGrounded = false;
+        this.SetGravity(2);
     }
 
     /// <summary>
@@ -85,37 +101,41 @@ public class PlayerMovementScript : MonoBehaviour
     /// <param name="type"></param>
     private void SetGravity(int type)
     {
-        Physics.gravity = -Vector3.up * (type == 1 ? normalGravity : gravityInAir);
+        Physics.gravity = -Vector3.up * (type == 1 ? this.normalGravity : this.gravityInAir);
     }
 
     private void OnTriggerStay(Collider col)
     {
-        if (col.tag == "Floor" && !isGrounded)
+        if (col.tag == "Floor" && !this.isGrounded)
         {
-            isGrounded = true;
+            this.isGrounded = true;
 
-            if (Physics.gravity != Vector3.up * normalGravity)
+            if (Physics.gravity != Vector3.up * this.normalGravity)
             {
-                SetGravity(1);
+                this.SetGravity(1);
             }
         }
     }
     
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Floor" && !isGrounded)
+        Debug.Log("TriggerEnter");
+
+        if (col.tag == "Floor" && !this.isGrounded)
         {
-            isGrounded = true;
-            SetGravity(1);
+            this.isGrounded = true;
+            this.SetGravity(1);
         }
     }
 
     private void OnTriggerExit(Collider col)
     {
-        if (col.tag == "Floor" && isGrounded)
+        Debug.Log("TriggerExit");
+
+        if (col.tag == "Floor" && this.isGrounded)
         {
-            isGrounded = false;
-            SetGravity(2);
+            this.isGrounded = false;
+            this.SetGravity(2);
         }
     }
 }
