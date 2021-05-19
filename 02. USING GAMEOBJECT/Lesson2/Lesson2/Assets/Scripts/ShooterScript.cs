@@ -41,8 +41,8 @@ public class ShooterScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
             var rocket = Instantiate(this.rocket);
-            rocket.transform.position = this.bulletPosition.transform.position;
 
+            rocket.transform.position = this.bulletPosition.transform.position;
             rocket.transform.rotation = this.bulletPosition.transform.rotation;
 
             rocket.AddComponent<RocketEngine>();
